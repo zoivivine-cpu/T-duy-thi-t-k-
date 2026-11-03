@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EASY FILM — Đơn giản hóa hành trình chơi máy film</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--ink:#101010;--paper:#f7f7f1;--lime:#b7ff35;--cyan:#22d8ec;--yellow:#ffeb38;--pink:#ff8cae;--line:1.4px solid var(--ink)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Space Grotesk',Arial,sans-serif}
+button,a{font:inherit;color:inherit}a{text-decoration:none}
+.mono{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.02em}
+header{position:sticky;top:0;z-index:20;background:rgba(247,247,241,.94);backdrop-filter:blur(12px);border-bottom:var(--line);padding:10px 3.2%;display:flex;align-items:center;gap:14px}
+.logo{font-size:25px;font-weight:700;letter-spacing:-1.8px;margin-right:12px;white-space:nowrap}
+.logo span{background:var(--lime);padding:1px 6px;border:var(--line);border-radius:20px}
+nav{display:flex;gap:5px;flex:1;flex-wrap:wrap}
+nav button,.top-action{border:var(--line);background:white;border-radius:30px;padding:8px 16px;font-size:13px;cursor:pointer;transition:.2s}
+nav button:hover,nav button.active{background:var(--lime);transform:translateY(-1px)}
+.top-action{background:var(--cyan);font-weight:700}
+main{max-width:1440px;margin:auto;padding:26px 3.2% 60px}
+.page{display:none;animation:appear .35s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:18px;margin:10px 0 26px}
+.hero-copy{min-height:350px;display:flex;flex-direction:column;justify-content:space-between}
+.eyebrow{display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--lime);border:var(--line);display:inline-block}
+.hero h1{font-size:clamp(48px,7.6vw,104px);line-height:.83;letter-spacing:-.09em;margin:30px 0 18px;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--cyan);-webkit-text-stroke:1px var(--ink)}
+.intro{font-size:16px;line-height:1.5;max-width:480px;margin:0}
+.hero-art{border:var(--line);border-radius:26px;overflow:hidden;min-height:350px;background:var(--cyan);position:relative;display:flex;align-items:center;justify-content:center}
+.hero-art:before{content:"";position:absolute;width:75%;height:75%;border:1px solid rgba(0,0,0,.4);border-radius:50%;transform:rotate(-22deg)}
+.camera-illustration{font-size:clamp(100px,18vw,230px);filter:grayscale(1);position:relative;z-index:1;text-shadow:8px 8px 0 var(--yellow);transform:rotate(-8deg)}
+.sticker{position:absolute;z-index:2;border:var(--line);border-radius:20px;padding:8px 13px;background:var(--yellow);font-size:12px;font-weight:700}
+.sticker.one{top:18px;left:18px}
+.sticker.two{right:16px;bottom:18px;background:var(--lime);transform:rotate(5deg)}
+.section-head{display:flex;justify-content:space-between;align-items:end;border-bottom:var(--line);padding:12px 0;margin:28px 0 14px}
+.section-head h2{font-size:clamp(27px,4vw,42px);letter-spacing:-.06em;margin:0}
+.section-head p{margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{border:var(--line);border-radius:20px;background:white;padding:16px;min-width:0;position:relative;overflow:hidden}
+.card.lime{background:var(--lime)}.card.cyan{background:var(--cyan)}.card.yellow{background:var(--yellow)}
+.card h3{font-size:22px;letter-spacing:-.05em;margin:8px 0}
+.card p{font-size:13px;line-height:1.5}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.arrow{width:29px;height:29px;border:var(--line);border-radius:50%;display:grid;place-items:center;background:white;font-size:18px}
+.feature-number{font-size:54px;letter-spacing:-.08em;font-weight:700}
+.pill{display:inline-block;border:var(--line);border-radius:20px;padding:5px 9px;font-size:11px;background:white;margin:3px 3px 0 0}
+.tile-art{height:120px;border:var(--line);border-radius:13px;background:linear-gradient(135deg,#ddd,#777);display:grid;place-items:center;font-size:72px;filter:grayscale(.85)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.banner{padding:20px;border:var(--line);border-radius:20px;background:var(--yellow);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.banner h2{font-size:clamp(28px,4vw,46px);letter-spacing:-.07em;margin:0}
+.banner .big{font-size:65px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.toolbar input,.toolbar select{border:var(--line);border-radius:30px;background:white;padding:10px 15px;min-width:180px;outline:none}
+.toolbar input:focus,.toolbar select:focus{box-shadow:3px 3px 0 var(--lime)}
+.item-card{border:var(--line);border-radius:18px;background:white;overflow:hidden}
+.item-visual{height:150px;display:grid;place-items:center;font-size:78px;background:var(--lime);filter:none}
+.item-info{padding:13px}
+.item-info h3{margin:4px 0;font-size:20px}
+.item-info p{font-size:12px;line-height:1.45}
+.text-link{display:inline-block;border:var(--line);border-radius:22px;background:var(--cyan);padding:7px 11px;font-size:12px;font-weight:700;margin-top:5px}
+.text-link:hover{background:var(--yellow)}
+.guide-layout{display:grid;grid-template-columns:230px 1fr;gap:14px}
+.side-menu{align-self:start;position:sticky;top:80px;border:var(--line);border-radius:18px;background:var(--lime);padding:12px}
+.side-menu a{display:block;border-bottom:1px solid rgba(0,0,0,.4);padding:10px 4px;font-size:13px}
+.side-menu a:last-child{border:0}
+.guide-article{border:var(--line);border-radius:20px;background:white;padding:22px;margin-bottom:12px;scroll-margin-top:90px}
+.guide-article h2{font-size:30px;letter-spacing:-.06em;margin:5px 0 10px}
+.guide-article p,.guide-article li{font-size:14px;line-height:1.65}
+.guide-article ul{padding-left:20px}
+.film-swatch{height:118px;border:var(--line);border-radius:12px;margin-bottom:12px;position:relative;overflow:hidden;background:linear-gradient(110deg,#153b27,#b4b76b,#f1d6a0)}
+.film-swatch:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.6),transparent 25%),linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent)}
+.lab-card{display:grid;grid-template-columns:100px 1fr;gap:14px;align-items:center}
+.lab-icon{height:100px;border:var(--line);border-radius:15px;background:var(--cyan);display:grid;place-items:center;font-size:43px}
+footer{margin-top:42px;border:var(--line);border-radius:22px;background:var(--ink);color:white;padding:24px;display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
+.footer-title{font-size:40px;letter-spacing:-.07em;line-height:.9;color:var(--lime)}
+footer p{font-size:13px;line-height:1.6;color:#e7e7e7}
+footer a{color:var(--cyan);text-decoration:underline}
+.footer-meta{border-left:1px solid #777;padding-left:20px}
+.thanks{border:1px solid #777;border-radius:15px;padding:12px;margin-top:12px;font-size:12px;color:#eee}
+.notice{background:#fff6b5;border:1px dashed var(--ink);border-radius:14px;padding:12px 14px;font-size:12px;line-height:1.5;margin:14px 0}
+.empty{grid-column:1/-1;text-align:center;padding:30px;border:1px dashed var(--ink);border-radius:18px}
+@media(max-width:760px){
+header{flex-wrap:wrap}.logo{font-size:22px}nav{order:3;flex-basis:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}
+nav button{white-space:nowrap}.hero{grid-template-columns:1fr}.hero-copy{min-height:280px}
+.hero-art{min-height:260px}.grid{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}
+.guide-layout{grid-template-columns:1fr}.side-menu{position:static;display:flex;overflow-x:auto;gap:10px}
+.side-menu a{white-space:nowrap;border:0;border-right:1px solid;padding:8px 12px}
+.side-menu a:last-child{border:0}footer{grid-template-columns:1fr}
+.footer-meta{border:0;border-top:1px solid #777;padding:14px 0 0}
+.lab-card{grid-template-columns:75px 1fr}.lab-icon{height:75px}
+}
+@media(max-width:430px){
+main{padding:18px 4% 40px}.grid{grid-template-columns:1fr}
+.hero h1{font-size:58px}.hero-art{min-height:220px}
+.toolbar input,.toolbar select{width:100%}
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" onclick="showPage('home');return false">EASY <span>FILM</span></a>
+  <nav aria-label="Điều hướng chính">
+    <button class="active" data-page="home" onclick="showPage('home')">Trang chủ</button>
+    <button data-page="guide" onclick="showPage('guide')">Cẩm nang</button>
+    <button data-page="cameras" onclick="showPage('cameras')">Máy film</button>
+    <button data-page="films" onclick="showPage('films')">Cuộn film</button>
+    <button data-page="labs" onclick="showPage('labs')">Trang film / Lab</button>
+  </nav>
+  <a class="top-action" href="#contact">Let’s talk ↗</a>
+</header>
+<main>
+<!-- HOME -->
+<section class="page active" id="home">
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow mono"><span class="dot"></span> YOUR FILM JOURNEY STARTS HERE / 001</div>
+      <div><h1>MAKE FILM<br>FEEL <em>EASY.</em></h1><p class="intro">Máy film không khó tiếp cận như bạn nghĩ. EASY FILM được tạo ra để gom những kiến thức cần thiết vào một nơi — giúp bạn chọn máy, chọn film, chụp và tráng ảnh tự tin hơn.</p></div>
+      <div><span class="pill">For curious beginners</span><span class="pill">Shoot · Learn · Develop</span><span class="pill">Vietnam film guide</span></div>
+    </div>
+    <div class="hero-art"><span class="sticker one">ANALOG IS NOT COMPLICATED ✳</span><div class="camera-illustration">📷</div><span class="sticker two">LESS SEARCHING. MORE SHOOTING.</span></div>
+  </div>
+  <div class="banner"><div><div class="mono">A LITTLE HELP FOR YOUR FIRST ROLL</div><h2>Không cần biết hết.<br>Chỉ cần bắt đầu.</h2></div><div class="big">✳</div></div>
+  <div class="section-head"><h2>Explore the toolkit</h2><span class="mono">01 — 05 / DISCOVER</span></div>
+  <div class="grid">
+    <a class="card lime" href="#" onclick="showPage('guide');return false"><div class="card-top"><span class="mono">01 / LEARN</span><span class="arrow">↗</span></div><div class="feature-number">?</div><h3>Cẩm nang nhập môn</h3><p>Từ cuộn film đầu tiên đến cách chụp, bảo quản và tráng ảnh.</p></a>
+    <a class="card cyan" href="#" onclick="showPage('cameras');return false"><div class="card-top"><span class="mono">02 / FIND</span><span class="arrow">↗</span></div><div class="feature-number">📷</div><h3>Tìm chiếc máy hợp bạn</h3><p>Khám phá máy theo dòng, hãng và khoảng ngân sách.</p></a>
+    <a class="card yellow" href="#" onclick="showPage('films');return false"><div class="card-top"><span class="mono">03 / PICK</span><span class="arrow">↗</span></div><div class="feature-number">▧</div><h3>Chọn cuộn film</h3><p>Nhìn trước chất màu, độ tương phản và cá tính từng cuộn.</p></a>
+    <a class="card" href="#" onclick="showPage('labs');return false"><div class="card-top"><span class="mono">04 / DEVELOP</span><span class="arrow">↗</span></div><div class="feature-number">⌁</div><h3>Tìm film lab</h3><p>Tham khảo các địa chỉ tráng, scan ảnh theo khu vực.</p></a>
+    <div class="card" style="background:var(--pink)"><div class="card-top"><span class="mono">05 / SHARE</span><span class="arrow">♡</span></div><div class="feature-number">✳</div><h3>Chơi film theo cách của bạn</h3><p>Không có công thức hoàn hảo. Hãy thử, ghi lại và tận hưởng.</p></div>
+    <div class="card" style="background:#e9e9e3"><div class="card-top"><span class="mono">A NOTE</span><span class="arrow">↗</span></div><h3>Đừng để nỗi sợ làm hỏng ảnh cản bạn.</h3><p>Mỗi cuộn film là một lần học. Ảnh chưa hoàn hảo vẫn là một kỷ niệm.</p></div>
+  </div>
+  <div class="section-head"><h2>Fresh from EASY FILM</h2><span class="mono">LATEST UPDATES</span></div>
+  <div class="grid">
+    <a class="card cyan" href="#" onclick="showPage('guide');return false"><span class="mono">GUIDE / START HERE</span><h3>Máy film hoạt động như thế nào?</h3><p>Hiểu nhanh về phim âm bản, ánh sáng và quá trình tạo nên một bức ảnh.</p><span class="pill">Đọc cẩm nang ↗</span></a>
+    <a class="card yellow" href="#" onclick="showPage('cameras');return false"><span class="mono">CAMERA / BUYING TIPS</span><h3>Checklist trước khi mua máy film cũ</h3><p>Những điểm nên kiểm tra để hạn chế mua phải máy lỗi.</p><span class="pill">Khám phá máy ↗</span></a>
+    <a class="card lime" href="#" onclick="showPage('films');return false"><span class="mono">FILM / COLOR GUIDE</span><h3>Chọn màu film theo mood</h3><p>Tông ấm, tông lạnh hay màu tự nhiên — bắt đầu từ cảm giác bạn thích.</p><span class="pill">Xem cuộn film ↗</span></a>
+  </div>
+</section>
+
+<!-- GUIDE -->
+<section class="page" id="guide">
+  <div class="section-head"><h2>THE FILM MANUAL.</h2><span class="mono">BEGINNER FRIENDLY / 001</span></div>
+  <p class="intro">Một chiếc bản đồ nhỏ dành cho người mới. Đọc lần lượt hoặc chọn đúng điều bạn đang cần.</p>
+  <div class="guide-layout" style="margin-top:18px">
+    <aside class="side-menu"><a href="#g-film">01. Film là gì?</a><a href="#g-camera">02. Chọn máy film</a><a href="#g-roll">03. Chọn cuộn film</a><a href="#g-shoot">04. Cách chụp</a><a href="#g-care">05. Bảo quản & tráng</a></aside>
+    <div>
+      <article class="guide-article" id="g-film"><span class="mono">01 / THE BASICS</span><h2>Film là gì?</h2><p>Film (phim ảnh) là vật liệu nhạy sáng được đặt bên trong máy ảnh. Khi ánh sáng đi qua ống kính và tiếp xúc với film, hình ảnh được ghi lại dưới dạng tiềm ẩn. Sau đó film cần được tráng bằng quy trình hóa học và scan hoặc in ảnh để xem thành phẩm.</p><p>Khác với máy ảnh số, mỗi cuộn film có số kiểu chụp giới hạn — thường gặp là 24 hoặc 36 kiểu với film 35mm. Vì vậy, người chụp thường cân nhắc khung hình kỹ hơn và chờ đợi kết quả sau khi tráng.</p><div class="notice">Ghi nhớ: film 35mm (135) là định dạng phổ biến cho người mới. Tuy nhiên, không phải mọi máy film đều dùng chung một loại film — hãy kiểm tra định dạng tương thích của máy.</div></article>
+      <article class="guide-article" id="g-camera"><span class="mono">02 / CHOOSE YOUR CAMERA</span><h2>Chọn máy film đầu tiên</h2><p>Đừng bắt đầu bằng chiếc máy đắt nhất. Hãy chọn theo cách bạn muốn chụp và mức độ sẵn sàng tìm hiểu kỹ thuật.</p><ul><li><b>Point & Shoot:</b> nhỏ gọn, tự động lấy nét/phơi sáng ở nhiều mẫu, phù hợp chụp đời thường và đi chơi.</li><li><b>SLR:</b> linh hoạt hơn, thường cho phép thay ống kính và điều chỉnh thông số; phù hợp khi muốn học sâu về nhiếp ảnh.</li><li><b>Rangefinder:</b> ngắm và lấy nét bằng hệ thống đo khoảng cách; có thể nhỏ gọn nhưng thao tác cần làm quen.</li><li><b>Máy half-frame:</b> mỗi khung hình nhỏ hơn khổ 35mm thông thường, thường chụp được nhiều kiểu hơn trên cùng cuộn film.</li></ul><p><b>Ngân sách tham khảo:</b> máy compact phổ thông có thể dao động từ vài trăm nghìn đến vài triệu đồng; máy SLR và máy sưu tầm có khoảng giá rất rộng. Giá phụ thuộc tình trạng, độ hiếm, phụ kiện và việc máy đã được kiểm tra hay chưa.</p><p>Trước khi mua, hãy hỏi rõ tình trạng pin, đèn flash, motor kéo film, màn trập, đo sáng, ống kính, khoang pin và chính sách bảo hành/đổi trả.</p></article>
+      <article class="guide-article" id="g-roll"><span class="mono">03 / PICK A ROLL</span><h2>Chọn cuộn film phù hợp</h2><ul><li><b>ISO 100–200:</b> hợp ánh sáng ngoài trời tốt, hạt thường mịn hơn.</li><li><b>ISO 400:</b> linh hoạt cho nhiều tình huống, phù hợp người mới.</li><li><b>ISO 800 trở lên:</b> hữu ích khi thiếu sáng hơn, nhưng cần cân nhắc độ hạt và khả năng của máy.</li></ul><p>Hãy chọn theo điều kiện ánh sáng, màu sắc bạn thích và ngân sách. Kiểm tra hạn sử dụng, cách bảo quản và loại film màu/đen trắng trước khi mua.</p></article>
+      <article class="guide-article" id="g-shoot"><span class="mono">04 / TAKE THE SHOT</span><h2>Cách chụp và những lưu ý</h2><ul><li>Đọc hướng dẫn của đúng mẫu máy; xác định máy tự động hay cần chỉnh khẩu độ/tốc độ.</li><li>Kiểm tra film đã được lắp và kéo đúng chưa; đóng nắp lưng trước khi chụp.</li><li>Quan sát ánh sáng. Người mới nên ưu tiên nơi đủ sáng, tránh chụp ngược sáng quá mạnh khi chưa quen.</li><li>Giữ máy chắc tay, lấy nét đúng chủ thể và kiểm tra khoảng cách lấy nét tối thiểu.</li><li>Không mở nắp lưng khi film chưa được tua hết vào lõi. Điều này có thể làm cháy các khung hình đã chụp.</li></ul></article>
+      <article class="guide-article" id="g-care"><span class="mono">05 / AFTER THE SHOOT</span><h2>Bảo quản, tráng và scan</h2><p>Tránh để máy ở nơi ẩm, nóng hoặc có ánh nắng trực tiếp trong thời gian dài. Tháo pin nếu không sử dụng lâu ngày và vệ sinh máy bằng dụng cụ phù hợp. Film chưa chụp nên được bảo quản theo khuyến nghị của nhà sản xuất; nếu cần lưu trữ lâu, có thể cân nhắc bảo quản mát và tránh ngưng tụ hơi nước.</p><p>Khi chụp hết cuộn, tua film về hộp trước khi mở máy (nếu máy không tự tua). Mang cuộn film tới lab, ghi rõ loại film và yêu cầu tráng/scan. Hỏi trước về thời gian trả ảnh, định dạng file, độ phân giải, cách nhận film âm bản và chi phí phát sinh.</p><div class="notice">Mẹo nhỏ: ghi lại tên cuộn film, ngày chụp và điều kiện ánh sáng. Khi nhận ảnh, bạn sẽ hiểu rõ hơn vì sao mỗi cuộn cho ra màu sắc khác nhau.</div></article>
+    </div>
+  </div>
+</section>
+
+<!-- CAMERAS -->
+<section class="page" id="cameras">
+  <div class="section-head"><h2>FIND YOUR CAMERA.</h2><span class="mono">CAMERA DIRECTORY / 002</span></div>
+  <p class="intro">Khám phá một số dòng máy phổ biến để bắt đầu tìm hiểu. Link bên dưới dẫn tới trang tìm kiếm sản phẩm — hãy kiểm tra người bán và tình trạng máy trước khi mua.</p>
+  <div class="toolbar"><input id="cameraSearch" placeholder="Tìm tên máy hoặc hãng..." oninput="filterCameras()"><select id="cameraType" onchange="filterCameras()"><option value="all">Tất cả các dòng</option><option>Point & Shoot</option><option>SLR</option><option>Half-frame</option></select><select id="cameraBrand" onchange="filterCameras()"><option value="all">Tất cả hãng</option><option>Canon</option><option>Olympus</option><option>Minolta</option><option>Pentax</option><option>Ricoh</option></select></div>
+  <div class="grid" id="cameraGrid"></div>
+  <div class="notice">Danh sách mang tính tham khảo, không phải bảng giá hoặc xác nhận còn hàng theo thời gian thực. Giá máy film cũ thay đổi theo tình trạng và người bán. Hãy yêu cầu video test các chức năng quan trọng, ảnh khoang pin/ống kính và điều kiện bảo hành trước khi giao dịch.</div>
+</section>
+
+<!-- FILMS -->
+<section class="page" id="films">
+  <div class="section-head"><h2>ROLL WITH COLORS.</h2><span class="mono">FILM STOCK / 003</span></div>
+  <p class="intro">Mỗi cuộn film có một cá tính màu riêng. Khám phá nhiều dòng Kodak, Fujifilm, Yes!Star và Cyberpunk. Lọc theo thương hiệu để so sánh ISO, màu sắc, định dạng và quy trình tráng.</p>
+  <div class="toolbar"><input id="filmSearch" placeholder="Tìm tên cuộn film..." oninput="filterFilms()"><select id="filmType" onchange="filterFilms()"><option value="all">Tất cả loại film</option><option>Màu</option><option>Đen trắng</option><option>Slide</option></select><select id="filmBrand" onchange="filterFilms()"><option value="all">Tất cả thương hiệu</option><option>Kodak</option><option>Fujifilm</option><option>Yes!Star</option><option>Cyberpunk</option></select></div>
+  <div class="grid" id="filmGrid"></div>
+  <div class="notice">Màu sắc thực tế thay đổi theo ánh sáng, máy, lens, quy trình tráng và cách lab scan/chỉnh màu. Các dải màu ở đây là minh họa cảm hứng, không phải ảnh sample được chụp từ chính cuộn film. Một số dòng đã ngừng sản xuất hoặc có nguồn hàng thay đổi theo thị trường. Với Yes!Star và Cyberpunk, hãy xác nhận ISO, định dạng và quy trình tráng trên bao bì hoặc với người bán/lab trước khi mua.</div>
+</section>
+
+<!-- LABS -->
+<section class="page" id="labs">
+  <div class="section-head"><h2>WHERE FILM COMES ALIVE.</h2><span class="mono">LAB FINDER / 004</span></div>
+  <p class="intro">Tìm nơi tráng và scan film phù hợp. Chọn khu vực để mở tìm kiếm địa điểm và kiểm tra thông tin mới nhất.</p>
+  <div class="toolbar"><select id="labRegion" onchange="filterLabs()"><option value="all">Toàn quốc</option><option>Miền Bắc</option><option>Miền Trung</option><option>Miền Nam</option></select><input id="labSearch" placeholder="Tìm tỉnh/thành..." oninput="filterLabs()"></div>
+  <div class="grid" id="labGrid"></div>
+  <div class="notice">Để tránh cung cấp thông tin lỗi thời, EASY FILM mở tìm kiếm bản đồ theo khu vực thay vì tự khẳng định lab nào đang hoạt động hoặc còn nhận film. Trước khi gửi film, hãy xác nhận loại film nhận tráng, giá, thời gian trả, phương thức gửi/nhận và cách lưu giữ film âm bản.</div>
+</section>
+
+<footer id="contact">
+  <div><div class="mono">A SMALL PROJECT FOR FILM BEGINNERS</div><div class="footer-title">THANKS FOR<br>STOPPING BY.</div><p>EASY FILM được tạo ra với mong muốn hành trình chơi máy film trở nên dễ hiểu và gần gũi hơn. Nếu bạn có kiến thức, trải nghiệm hay địa chỉ hay muốn chia sẻ, tụi mình luôn sẵn sàng lắng nghe.</p><div class="thanks">Cảm ơn bạn đã ghé thăm! Mọi góp ý, đề xuất nội dung hoặc thông tin cần cập nhật đều rất đáng quý. Hãy cùng nhau làm cho cộng đồng film dễ tiếp cận hơn nhé. ♡</div></div>
+  <div class="footer-meta"><div class="mono">CONTACT / THE PERSON BEHIND EASY FILM</div><p><b>Founder:</b> Bạch Trung Hiếu<br><b>Lớp:</b> 26GT3<br><b>Đơn vị:</b> Trường Khoa học Liên ngành và Nghệ thuật</p><p><b>SĐT:</b> <a href="tel:0912197209">0912197209</a><br><b>Gmail:</b> <a href="mailto:zoivivine@gmail">zoivivine@gmail</a></p><p class="mono">EASY FILM © 2026 — SHOOT, LEARN, REPEAT.</p></div>
+</footer>
+</main>
+<script>
+function showPage(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+const cameras=[
+ {name:'Olympus Trip 35',brand:'Olympus',type:'Point & Shoot',desc:'Máy compact cổ điển, thao tác đơn giản, phù hợp chụp đời thường ngoài trời.',price:'Tầm giá tham khảo: phổ thông–trung cấp',emoji:'📸'},
+ {name:'Olympus Mju / Stylus',brand:'Olympus',type:'Point & Shoot',desc:'Dòng compact nhỏ gọn, nhiều mẫu có autofocus và thiết kế dễ mang theo.',price:'Tầm giá tham khảo: trung cấp–cao',emoji:'📷'},
+ {name:'Canon Sure Shot / Autoboy',brand:'Canon',type:'Point & Shoot',desc:'Tên gọi của nhiều dòng compact tự động; cần kiểm tra chính xác từng model.',price:'Tùy model và tình trạng',emoji:'🎞️'},
+ {name:'Ricoh FF series',brand:'Ricoh',type:'Point & Shoot',desc:'Một số mẫu nhỏ gọn, phù hợp người thích máy tự động và trải nghiệm tối giản.',price:'Tùy model và tình trạng',emoji:'📸'},
+ {name:'Minolta Riva / Freedom',brand:'Minolta',type:'Point & Shoot',desc:'Nhiều lựa chọn compact zoom; nên test motor zoom và flash kỹ.',price:'Tùy model và tình trạng',emoji:'📷'},
+ {name:'Pentax Espio',brand:'Pentax',type:'Point & Shoot',desc:'Dòng compact zoom có nhiều phiên bản; lưu ý kiểm tra màn hình và cơ cấu ống kính.',price:'Tùy model và tình trạng',emoji:'🎞️'},
+ {name:'Canon AE-1',brand:'Canon',type:'SLR',desc:'Máy SLR cơ học/điện tử được nhiều người chơi tìm hiểu; dùng ống kính ngàm FD.',price:'Tầm giá tham khảo: trung cấp',emoji:'📷'},
+ {name:'Pentax K1000',brand:'Pentax',type:'SLR',desc:'SLR lấy nét tay, phù hợp học phơi sáng và các thao tác nhiếp ảnh cơ bản.',price:'Tầm giá tham khảo: trung cấp',emoji:'📸'},
+ {name:'Olympus OM-1',brand:'Olympus',type:'SLR',desc:'Thân máy SLR nhỏ gọn, hệ ống kính OM; cần kiểm tra tình trạng đo sáng và gioăng.',price:'Tầm giá tham khảo: trung cấp–cao',emoji:'🎞️'},
+ {name:'Olympus Pen EE',brand:'Olympus',type:'Half-frame',desc:'Máy half-frame nhỏ gọn, mỗi khung hình dùng một nửa khổ 35mm.',price:'Tùy phiên bản và tình trạng',emoji:'📷'}
+];
+const films=[
+ {name:'Kodak Gold 200',brand:'Kodak',type:'Màu',iso:'ISO 200',process:'C-41',format:'35mm',desc:'Tông ấm, vàng nắng dễ chịu; hợp chụp ngoài trời và những ngày nhiều nắng.',colors:['#f5d77b','#eaa65c','#b86d43']},
+ {name:'Kodak ColorPlus 200',brand:'Kodak',type:'Màu',iso:'ISO 200',process:'C-41',format:'35mm',desc:'Màu sắc gần gũi, thiên ấm; lựa chọn phổ biến để làm quen với film màu.',colors:['#e8c57b','#d58c61','#8f9b5a']},
+ {name:'Kodak Ultramax 400',brand:'Kodak',type:'Màu',iso:'ISO 400',process:'C-41',format:'35mm',desc:'Độ nhạy sáng linh hoạt, màu sắc rực rỡ; phù hợp du lịch và chụp đời thường.',colors:['#f0ce62','#e57c4f','#6f9a9c']},
+ {name:'Kodak Pro Image 100',brand:'Kodak',type:'Màu',iso:'ISO 100',process:'C-41',format:'35mm',desc:'Tông màu tự nhiên, thiên ấm; hợp chân dung và chụp ngoài trời đủ sáng.',colors:['#e7c69b','#c78f66','#8b9c72']},
+ {name:'Kodak Ektar 100',brand:'Kodak',type:'Màu',iso:'ISO 100',process:'C-41',format:'35mm / 120',desc:'Màu bão hòa và độ chi tiết cao; hợp phong cảnh, kiến trúc và cảnh nhiều màu.',colors:['#4d9b89','#e4c45f','#d66d4d']},
+ {name:'Kodak Portra 160',brand:'Kodak',type:'Màu',iso:'ISO 160',process:'C-41',format:'35mm / 120',desc:'Tông da dịu, màu nhẹ và tự nhiên; hợp chân dung trong điều kiện đủ sáng.',colors:['#e8c9b2','#c69b80','#9eaa9a']},
+ {name:'Kodak Portra 400',brand:'Kodak',type:'Màu',iso:'ISO 400',process:'C-41',format:'35mm / 120',desc:'Film chân dung linh hoạt, dải sáng rộng và màu da dịu; thường có giá cao hơn.',colors:['#e8c6a8','#c58f72','#9eaa9a']},
+ {name:'Kodak Portra 800',brand:'Kodak',type:'Màu',iso:'ISO 800',process:'C-41',format:'35mm / 120',desc:'Độ nhạy sáng cao hơn, phù hợp chân dung và bối cảnh ánh sáng yếu hơn.',colors:['#d9b79b','#a87865','#646f61']},
+ {name:'Kodak Tri-X 400',brand:'Kodak',type:'Đen trắng',iso:'ISO 400',process:'B&W',format:'35mm / 120',desc:'Film đen trắng kinh điển, độ tương phản rõ và hạt ảnh đặc trưng.',colors:['#171717','#777','#dedede']},
+ {name:'Kodak T-Max 100',brand:'Kodak',type:'Đen trắng',iso:'ISO 100',process:'B&W',format:'35mm / 120',desc:'Đen trắng ISO thấp, hạt mịn; phù hợp cảnh đủ sáng và nhiều chi tiết.',colors:['#292929','#999','#eeeeee']},
+ {name:'Fujicolor 100',brand:'Fujifilm',type:'Màu',iso:'ISO 100',process:'C-41',format:'35mm',desc:'Film màu ISO thấp, phù hợp ánh sáng ban ngày; nguồn hàng tùy thị trường.',colors:['#a7c9a3','#e8d58b','#80a9bd']},
+ {name:'Fujicolor 200',brand:'Fujifilm',type:'Màu',iso:'ISO 200',process:'C-41',format:'35mm',desc:'Màu tươi, cảm giác trong trẻo; lựa chọn quen thuộc cho ảnh ngoài trời.',colors:['#9dc8a0','#e9d58b','#7faec0']},
+ {name:'Fujifilm 400',brand:'Fujifilm',type:'Màu',iso:'ISO 400',process:'C-41',format:'35mm',desc:'ISO linh hoạt cho nhiều tình huống; đặc tính màu có thể khác theo phiên bản và thị trường.',colors:['#8ab4a2','#e5c875','#c47d68']},
+ {name:'Fujicolor Superia X-TRA 400',brand:'Fujifilm',type:'Màu',iso:'ISO 400',process:'C-41',format:'35mm',desc:'Dòng Superia quen thuộc với màu sắc sống động; hàng mới có thể khó tìm do thay đổi sản xuất.',colors:['#75a88d','#e6c55d','#c76e59']},
+ {name:'Fujicolor 400H',brand:'Fujifilm',type:'Màu',iso:'ISO 400',process:'C-41',format:'120 (chủ yếu)',desc:'Dòng film chân dung nổi tiếng đã ngừng sản xuất; hiện chủ yếu gặp trên thị trường hàng tồn hoặc đã qua lưu trữ.',colors:['#c7d4b2','#d9b6a1','#9ab3b6']},
+ {name:'Fujifilm Provia 100F',brand:'Fujifilm',type:'Slide',iso:'ISO 100',process:'E-6',format:'35mm / 120',desc:'Film slide màu cân bằng, màu sắc rõ; cần lab có quy trình tráng E-6.',colors:['#72a7a0','#e5d17a','#8b9dcb']},
+ {name:'Fujifilm Velvia 50',brand:'Fujifilm',type:'Slide',iso:'ISO 50',process:'E-6',format:'35mm / 120',desc:'Film slide có độ bão hòa màu cao, hợp phong cảnh và ánh sáng tốt; cần tráng E-6.',colors:['#258b76','#e8c93d','#d85e46']},
+ {name:'Fujifilm Neopan Acros II',brand:'Fujifilm',type:'Đen trắng',iso:'ISO 100',process:'B&W',format:'35mm / 120',desc:'Film đen trắng ISO 100, hạt mịn và chuyển sắc tốt; cần tráng đen trắng.',colors:['#202020','#858585','#eeeeee']},
+ {name:'Yes!Star 400',brand:'Yes!Star',type:'Màu',iso:'ISO 400',process:'Kiểm tra theo hộp film',format:'35mm (kiểm tra nhãn)',desc:'Film màu mang tên Yes!Star được một số cửa hàng phân phối. Hãy xem kỹ thông tin trên hộp và hỏi lab về quy trình tráng tương thích.',colors:['#f2bd59','#e47d65','#6b9c9a']},
+ {name:'Cyberpunk 400',brand:'Cyberpunk',type:'Màu',iso:'ISO 400 (xác nhận theo sản phẩm)',process:'Kiểm tra theo hộp film',format:'Kiểm tra theo sản phẩm',desc:'Dòng film/nhãn film phong cách Cyberpunk có thể có đặc tính màu riêng theo phiên bản. Xem thông số thực tế trên bao bì trước khi mua và tráng.',colors:['#e65b91','#47cbd4','#7b62b4']}
+];
+const labs=[
+ {name:'Tìm film lab tại Hà Nội',region:'Miền Bắc',city:'Hà Nội',desc:'Tìm địa chỉ tráng và scan film tại Hà Nội; gọi xác nhận dịch vụ trước khi gửi.',emoji:'🏙️'},
+ {name:'Tìm film lab tại Hải Phòng',region:'Miền Bắc',city:'Hải Phòng',desc:'Tra cứu các điểm nhận tráng film và dịch vụ scan tại Hải Phòng.',emoji:'🌊'},
+ {name:'Tìm film lab tại Đà Nẵng',region:'Miền Trung',city:'Đà Nẵng',desc:'Tìm lab tại Đà Nẵng và khu vực lân cận miền Trung.',emoji:'☀️'},
+ {name:'Tìm film lab tại Huế',region:'Miền Trung',city:'Huế',desc:'Tra cứu dịch vụ tráng, scan và gửi film tại Huế.',emoji:'🏯'},
+ {name:'Tìm film lab tại TP. Hồ Chí Minh',region:'Miền Nam',city:'TP. Hồ Chí Minh',desc:'Tìm các lab tráng film màu, đen trắng và scan tại TP. Hồ Chí Minh.',emoji:'🌆'},
+ {name:'Tìm film lab tại Cần Thơ',region:'Miền Nam',city:'Cần Thơ',desc:'Tra cứu điểm nhận film và dịch vụ scan tại Cần Thơ.',emoji:'🌴'}
+];
+function marketplace(name){return 'https://www.google.com/search?q='+encodeURIComponent(name+' máy ảnh film mua bán Việt Nam')}
+function renderCameras(list){
+ const grid=document.getElementById('cameraGrid');
+ grid.innerHTML=list.length?list.map(c=>`<article class="item-card"><div class="item-visual">${c.emoji}</div><div class="item-info"><span class="mono">${c.brand.toUpperCase()} / ${c.type.toUpperCase()}</span><h3>${c.name}</h3><p>${c.desc}</p><p><b>${c.price}</b></p><a class="text-link" target="_blank" rel="noopener" href="${marketplace(c.name)}">Tìm nơi bán ↗</a></div></article>`).join(''):'<div class="empty">Không tìm thấy mẫu máy phù hợp.</div>';
+}
+function filterCameras(){
+ const q=document.getElementById('cameraSearch').value.toLowerCase(),t=document.getElementById('cameraType').value,b=document.getElementById('cameraBrand').value;
+ renderCameras(cameras.filter(c=>(c.name+' '+c.brand).toLowerCase().includes(q)&&(t==='all'||c.type===t)&&(b==='all'||c.brand===b)));
+}
+function renderFilms(list){
+ document.getElementById('filmGrid').innerHTML=list.length?list.map(f=>`<article class="card"><div class="film-swatch" style="background:linear-gradient(110deg,${f.colors.join(',')})"></div><span class="mono">${f.brand.toUpperCase()} / ${f.type.toUpperCase()}</span><h3>${f.name}</h3><p>${f.desc}</p><span class="pill">${f.iso}</span><span class="pill">${f.format}</span><span class="pill">${f.process}</span><a class="text-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(f.name+' film mua Việt Nam')}">Tìm nơi bán ↗</a></article>`).join(''):'<div class="empty">Không tìm thấy cuộn film phù hợp.</div>';
+}
+function filterFilms(){
+ const q=document.getElementById('filmSearch').value.toLowerCase(),t=document.getElementById('filmType').value,b=document.getElementById('filmBrand').value;
+ renderFilms(films.filter(f=>(f.name+' '+f.brand).toLowerCase().includes(q)&&(t==='all'||f.type===t)&&(b==='all'||f.brand===b)));
+}
+function renderLabs(list){
+ document.getElementById('labGrid').innerHTML=list.length?list.map(l=>`<article class="card"><div class="lab-card"><div class="lab-icon">${l.emoji}</div><div><span class="mono">${l.region.toUpperCase()}</span><h3>${l.name}</h3><p>${l.desc}</p><a class="text-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/${encodeURIComponent('film lab tráng scan film '+l.city)}">Mở bản đồ ↗</a></div></div></article>`).join(''):'<div class="empty">Không tìm thấy khu vực phù hợp.</div>';
+}
+function filterLabs(){
+ const r=document.getElementById('labRegion').value,q=document.getElementById('labSearch').value.toLowerCase();
+ renderLabs(labs.filter(l=>(r==='all'||l.region===r)&&(l.city+' '+l.name).toLowerCase().includes(q)));
+}
+renderCameras(cameras);renderFilms(films);renderLabs(labs);
+</script>
+</body>
+</html>
